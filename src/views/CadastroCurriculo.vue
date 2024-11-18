@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <h1>Cadastro de Currículo</h1>
     <form @submit.prevent="cadastrarCurriculo">
       <div>
@@ -43,7 +44,7 @@ export default {
   methods: {
     async cadastrarCurriculo() {
       try {
-        // Verificando se os campos obrigatórios foram preenchidos
+        // Verifica os campos obrigatórios 
         if (!this.nome || !this.email || !this.experienciaProfissional) {
           alert('Por favor, preencha todos os campos obrigatórios.');
           return;
@@ -71,3 +72,46 @@ export default {
   },
 };
 </script>
+<style scoped>
+.form-container {
+  max-width: 5px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+textarea {
+  min-height: 10px;
+  resize: vertical;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #05884b;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+</style>
