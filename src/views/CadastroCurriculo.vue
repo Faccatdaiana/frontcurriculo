@@ -65,7 +65,7 @@ export default {
         this.enderecoWeb = '';
         this.experienciaProfissional = '';
       } catch (error) {
-        console.error('Erro ao cadastrar currículo:', error);
+        console.error('Erro ao cadastrar currículo:', error.response ? error.response.data : error.message);
         alert('Erro ao cadastrar currículo');
       }
     },
@@ -92,7 +92,7 @@ input,
 textarea {
   width: 100%;
   padding: 8px;
-  font-size: 10px;
+  font-size: 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }

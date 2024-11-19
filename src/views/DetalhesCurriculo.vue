@@ -5,11 +5,12 @@
     <p><strong>Telefone:</strong> {{ curriculo.telefone || 'Não informado' }}</p>
     <p><strong>Email:</strong> {{ curriculo.email }}</p>
     <p><strong>Endereço WEB:</strong> {{ curriculo.endereco_web || 'Não informado' }}</p>
-    <p><strong>Experiência Profissional:</strong> {{ curriculo.experiencia_profissional }}</p>
+    
+    <!--  experiência profissional com v-html -->
+    <p><strong>Experiência Profissional:</strong> <span v-html="curriculo.experiencia_profissional"></span></p>
     <router-link to="/">Voltar para a listagem</router-link>
   </div>
 </template>
-  
   <script>
   export default {
     data() {
@@ -17,6 +18,7 @@
         curriculo: null  
       };
     },
+    
     async created() {
   const id = this.$route.params.id; 
   try {
@@ -25,6 +27,8 @@
       throw new Error('Currículo não encontrado');
     }
     this.curriculo = await response.json();
+
+    
     console.log(this.curriculo);
   } catch (error) {
     console.error('Erro ao buscar detalhes do currículo:', error);
