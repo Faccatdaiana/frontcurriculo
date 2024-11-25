@@ -24,7 +24,7 @@
         <textarea v-model="experienciaProfissional" required></textarea>
       </div>
       <div>
-        <input type="hidden" v-model="csrfToken" />  <!-- Adicionando o token -->
+        <input type="hidden" v-model="csrfToken" />  
       </div>
       <button type="submit">Cadastrar</button>
     </form>
@@ -52,30 +52,28 @@ export default {
   methods: {
     async getCsrfToken() {
       try {
-        // Requisição para obter o token CSRF
+        // Requisição para obter o token
         const response = await axios.get('http://localhost:3000/api/csrf-token');
-        this.csrfToken = response.data.csrfToken;  // Salvando o token recebido
-        console.log('Token CSRF recebido:', this.csrfToken);  // Logando o token recebido
+        this.csrfToken = response.data.csrfToken;  // Salvando 
       } catch (error) {
-        console.error('Erro ao obter token CSRF:', error);
       }
     },
     async cadastrarCurriculo() {
       try {
-        // Verifica se os campos obrigatórios estão preenchidos
+        // campos obrigatórios estão preenchidos
         if (!this.nome || !this.email || !this.experienciaProfissional) {
           alert('Por favor, preencha todos os campos obrigatórios.');
           return;
         }
 
-        // Logando os dados que estão sendo enviados
+        //  dados que estão sendo enviados
         console.log('Enviando dados com o token CSRF:', {
           nome: this.nome,
           telefone: this.telefone,
           email: this.email,
           enderecoWeb: this.enderecoWeb,
           experienciaProfissional: this.experienciaProfissional,
-          _csrf: this.csrfToken,  // Envia o token junto com os dados
+          _csrf: this.csrfToken,  // Envia o token
         });
 
         const response = await axios.post(
@@ -102,7 +100,6 @@ export default {
         this.enderecoWeb = '';
         this.experienciaProfissional = '';
       } catch (error) {
-        console.error('Erro ao cadastrar currículo:', error);
         alert('Erro ao cadastrar currículo');
       }
     },
