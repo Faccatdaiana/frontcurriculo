@@ -23,6 +23,9 @@
         <label>Experiência Profissional:</label>
         <textarea v-model="experienciaProfissional" required></textarea>
       </div>
+      <div>
+        <input type="hidden" v-model="csrfToken" />  <!-- Adicionando o token -->
+      </div>
       <button type="submit">Cadastrar</button>
     </form>
   </div>
@@ -38,25 +41,59 @@ export default {
       telefone: '',
       email: '',
       enderecoWeb: '',
-      experienciaProfissional: ''
+      experienciaProfissional: '',
+      csrfToken: '',  // Guardando o token CSRF
     };
   },
+  created() {
+    
+    this.getCsrfToken();
+  },
   methods: {
+    async getCsrfToken() {
+      try {
+        // Requisição para obter o token CSRF
+        const response = await axios.get('http://localhost:3000/api/csrf-token');
+        this.csrfToken = response.data.csrfToken;  // Salvando o token recebido
+        console.log('Token CSRF recebido:', this.csrfToken);  // Logando o token recebido
+      } catch (error) {
+        console.error('Erro ao obter token CSRF:', error);
+      }
+    },
     async cadastrarCurriculo() {
       try {
-        // Verifica os campos obrigatórios 
+        // Verifica se os campos obrigatórios estão preenchidos
         if (!this.nome || !this.email || !this.experienciaProfissional) {
           alert('Por favor, preencha todos os campos obrigatórios.');
           return;
         }
 
-        const response = await axios.post('http://localhost:3000/api/curriculos', {
+        // Logando os dados que estão sendo enviados
+        console.log('Enviando dados com o token CSRF:', {
           nome: this.nome,
           telefone: this.telefone,
           email: this.email,
           enderecoWeb: this.enderecoWeb,
           experienciaProfissional: this.experienciaProfissional,
+          _csrf: this.csrfToken,  // Envia o token junto com os dados
         });
+
+        const response = await axios.post(
+          'http://localhost:3000/api/curriculos',
+          {
+            nome: this.nome,
+            telefone: this.telefone,
+            email: this.email,
+            enderecoWeb: this.enderecoWeb,
+            experienciaProfissional: this.experienciaProfissional,
+            _csrf: this.csrfToken,  // Envia o token 
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
 
         alert('Currículo cadastrado com sucesso!');
         this.nome = '';
@@ -65,12 +102,13 @@ export default {
         this.enderecoWeb = '';
         this.experienciaProfissional = '';
       } catch (error) {
-        console.error('Erro ao cadastrar currículo:', error.response ? error.response.data : error.message);
+        console.error('Erro ao cadastrar currículo:', error);
         alert('Erro ao cadastrar currículo');
       }
     },
   },
 };
+
 </script>
 <style scoped>
 .form-container {
